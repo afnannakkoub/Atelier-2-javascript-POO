@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Blog - Post + User</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, textarea { width: 100%; padding: 8px; margin: 8px 0; }
+    button { padding: 10px 15px; background: #28a745; color: white; border: none; cursor: pointer; }
+    .post { border: 1px solid #ccc; margin-top: 15px; padding: 15px; border-radius: 5px; }
+    .post small { color: #666; }
+  </style>
+</head>
+<body>
+
+  <h2>📝 Mini Blog - Ajouter un Post</h2>
+
+  <!-- Formulaire -->
+  <input type="text" id="titre" placeholder="Titre du post">
+  <textarea id="contenu" rows="4" placeholder="Contenu du post"></textarea>
+  
+  <h3>👤 Auteur</h3>
+  <input type="text" id="nomUser" placeholder="Nom de l'utilisateur">
+  <input type="email" id="emailUser" placeholder="Email de l'utilisateur">
+
+  <button onclick="ajouterPost()">Ajouter le Post</button>
+
+  <h3>📰 Liste des Posts :</h3>
+  <div id="listePosts"></div>
+
+  <script>
+    // Classe User
+    class User {
+      constructor(nom, email) {
+        this.nom = nom;
+        this.email = email;
+      }
+
+      toJSON() {
+        return JSON.stringify(this);
+      }
+
+      static fromJSON(json) {
+        const obj = JSON.parse(json);
+        return new User(obj.nom, obj.email);
+      }
+    }
+
+    // Classe Post
+    class Post {
+      constructor(titre, contenu, auteur) {
+        this.titre = titre;
+        this.contenu = contenu;
+        this.auteur = auteur; // objet User
+      }
+
+      toJSON() {
+        return JSON.stringify({
+          titre: this.titre,
+          contenu: this.contenu,
+          auteur: this.auteur
+        });
+      }
+
+      static fromJSON(json) {
+        const obj = JSON.parse(json);
+        const user = new User(obj.auteur.nom, obj.auteur.email);
+        return new Post(obj.titre, obj.contenu, user);
+      }
+
+      render() {
+        return `<div class="post">
+          <h4>${this.titre}</h4>
+          <p>${this.contenu}</p>
+          <small><strong>Auteur :</strong> ${this.auteur.nom} (${this.auteur.email})</small>
+        </div>`;
+      }
+    }
+
+    // Tableau de posts
+    let posts = [];
+
+    // Fonction d'ajout
+    function ajouterPost() {
+      const titre = document.getElementById("titre").value;
+      const contenu = document.getElementById("contenu").value;
+      const nomUser = document.getElementById("nomUser").value;
+      const emailUser = document.getElementById("emailUser").value;
+
+      if (titre && contenu && nomUser && emailUser) {
+        const auteur = new User(nomUser, emailUser);
+        const nouveauPost = new Post(titre, contenu, auteur);
+        posts.push(nouveauPost);
+        afficherPosts();
+
+        // Réinitialisation du formulaire
+        document.getElementById("titre").value = "";
+        document.getElementById("contenu").value = "";
+        document.getElementById("nomUser").value = "";
+        document.getElementById("emailUser").value = "";
+
+        // JSON console
+        console.log("JSON des posts :", JSON.stringify(posts.map(p => p.toJSON())));
+      } else {
+        alert("Veuillez remplir tous les champs.");
+      }
+    }
+
+    // Fonction d'affichage
+    function afficherPosts() {
+      const zone = document.getElementById("listePosts");
+      zone.innerHTML = posts.map(post => post.render()).join("");
+    }
+  </script>
+
+</body>
+</html>

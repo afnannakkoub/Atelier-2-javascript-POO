@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 3 - POO avec Interface</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #6C63FF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .output {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+      min-height: 100px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Exercice 3 - Classes Géométriques</h2>
+
+  <button onclick="afficherVecteurs()">Afficher Vecteurs</button>
+  <button onclick="afficherRectangles()">Afficher Rectangle et Carré</button>
+  <button onclick="afficherSegment()">Afficher Segment</button>
+
+  <div class="output" id="resultat">Clique sur un bouton pour voir le résultat.</div>
+
+  <script>
+    class Vecteur2D {
+      constructor(x = 0, y = 0) {
+        this.x = x;
+        this.y = y;
+      }
+
+      afficher() {
+        return `Vecteur (${this.x}, ${this.y})`;
+      }
+
+      addition(v) {
+        return new Vecteur2D(this.x + v.x, this.y + v.y);
+      }
+    }
+
+    class Rectangle {
+      constructor(longueur = 1, largeur = 1) {
+        this.longueur = longueur;
+        this.largeur = largeur;
+        this.nom = "rectangle";
+      }
+
+      surface() {
+        return this.longueur * this.largeur;
+      }
+
+      afficher() {
+        return `[${this.nom}] ${this.longueur} x ${this.largeur} → surface: ${this.surface()}`;
+      }
+    }
+
+    class Carre extends Rectangle {
+      constructor(cote = 1) {
+        super(cote, cote);
+        this.nom = "carré";
+      }
+    }
+
+    class Point {
+      constructor(x = 0.0, y = 0.0) {
+        this.x = x;
+        this.y = y;
+      }
+
+      afficher() {
+        return `(${this.x}, ${this.y})`;
+      }
+    }
+
+    class Segment {
+      constructor(x1, y1, x2, y2) {
+        this.orig = new Point(x1, y1);
+        this.extrem = new Point(x2, y2);
+      }
+
+      afficher() {
+        return `Segment de ${this.orig.afficher()} à ${this.extrem.afficher()}`;
+      }
+    }
+
+    function afficherVecteurs() {
+      const v1 = new Vecteur2D();
+      const v2 = new Vecteur2D(3, 4);
+      const v3 = v1.addition(v2);
+
+      document.getElementById("resultat").innerText =
+        " Vecteurs :\n" +
+        v1.afficher() + "\n" +
+        v2.afficher() + "\n" +
+        "Somme : " + v3.afficher();
+    }
+
+    function afficherRectangles() {
+      const r = new Rectangle(5, 3);
+      const c = new Carre(4);
+
+      document.getElementById("resultat").innerText =
+        " Rectangle et Carré :\n" +
+        r.afficher() + "\n" +
+        c.afficher();
+    }
+
+    function afficherSegment() {
+      const s = new Segment(0, 0, 3, 4);
+
+      document.getElementById("resultat").innerText =
+        " Segment :\n" +
+        s.afficher();
+    }
+  </script>
+
+</body>
+</html>

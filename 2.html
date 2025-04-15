@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Infos Étudiant et Professeur</title>
+</head>
+<body>
+
+  <h1>Informations</h1>
+
+  <h2>Étudiant</h2>
+  <div id="etudiant"></div>
+
+  <h2>Professeur</h2>
+  <div id="professeur"></div>
+
+  <h2>Liste des étudiants triés</h2>
+  <div id="liste-etudiants"></div>
+
+  <script>
+   let etudiant = {
+  nom: "nakk",
+  prenom: "afnan",
+  age: 22,
+  cne: "CNE12345"
+};
+
+let professeur = {
+  nom: "Khalid",
+  age: 45,
+  cin: "CIN67890"
+};
+
+// 2. Ajout de méthodes
+etudiant.etudier = function () {
+  console.log(`${this.prenom} étudie sérieusement.`);
+};
+
+professeur.enseigner = function () {
+  console.log(`${this.nom} enseigne avec passion.`);
+};
+   
+// 3. Tri d'une liste d'étudiants
+let etudiants = [
+  { nom: "Assad", prenom: "shaimae", age: 21 },
+  { nom: "bouchouari", prenom: "nisrine", age: 22 },
+  { nom: "ben", prenom: "Amine", age: 20 }
+];
+
+
+etudiants.sort((a, b) => {
+  if (a.nom !== b.nom) return a.nom.localeCompare(b.nom);
+  if (a.prenom !== b.prenom) return a.prenom.localeCompare(b.prenom);
+  return a.age - b.age;
+});
+
+console.log(etudiants);
+   // Affichage 
+   document.getElementById("etudiant").innerHTML = 
+      "Nom : " + etudiant.nom + "<br>" +
+      "Prénom : " + etudiant.prenom + "<br>" +
+      "Âge : " + etudiant.age + "<br>" +
+      "CNE : " + etudiant.cne;
+
+    document.getElementById("professeur").innerHTML = 
+      "Nom : " + professeur.nom + "<br>" +
+      "Âge : " + professeur.age + "<br>" +
+      "CIN : " + professeur.cin;
+
+    let listeHTML = "";
+    for (let i = 0; i < etudiants.length; i++) {
+      listeHTML += 
+        "Nom : " + etudiants[i].nom + "<br>" +
+        "Prénom : " + etudiants[i].prenom + "<br>" +
+        "Âge : " + etudiants[i].age + "<br><br>";
+    }
+    document.getElementById("liste-etudiants").innerHTML = listeHTML;
+  </script>
+
+</body>
+</html>

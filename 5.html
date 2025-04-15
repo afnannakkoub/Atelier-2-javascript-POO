@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bibliothèque - Exercice 5</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input { padding: 6px; margin-right: 10px; }
+    button { padding: 6px 12px; margin: 5px; background: #007bff; color: white; border: none; cursor: pointer; }
+    h3 { margin-top: 30px; }
+    .section { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+  <h2>📚 Gestion de Bibliothèque</h2>
+
+  <!-- Section 1 : Livres -->
+  <div class="section">
+    <h3>Livres (Array)</h3>
+    <input type="text" id="bookInput" placeholder="Titre du livre">
+    <button onclick="ajouterLivre()">Ajouter (fin)</button>
+    <button onclick="ajouterLivreDebut()">Ajouter (début)</button>
+    <button onclick="supprimerLivreFin()">Supprimer (fin)</button>
+    <button onclick="supprimerLivreDebut()">Supprimer (début)</button>
+    <div id="listeLivres"></div>
+  </div>
+
+  <!-- Section 2 : Catégories -->
+  <div class="section">
+    <h3>Catégories (Set)</h3>
+    <input type="text" id="categorieInput" placeholder="Nom de la catégorie">
+    <button onclick="ajouterCategorie()">Ajouter</button>
+    <button onclick="supprimerCategorie()">Supprimer</button>
+    <div id="listeCategories"></div>
+  </div>
+
+  <!-- Section 3 : Emprunts -->
+  <div class="section">
+    <h3>Emprunts (Map)</h3>
+    <input type="text" id="livreEmprunt" placeholder="Livre">
+    <input type="text" id="emprunteur" placeholder="Emprunteur">
+    <button onclick="ajouterEmprunt()">Ajouter Emprunt</button>
+    <button onclick="supprimerEmprunt()">Supprimer Emprunt</button>
+    <button onclick="verifierEmprunt()">Vérifier Emprunt</button>
+    <div id="listeEmprunts"></div>
+  </div>
+
+  <script>
+    // Array - Livres
+    let books = ["1984", "Le Petit Prince", "L'Étranger"];
+
+    function afficherLivres() {
+      document.getElementById("listeLivres").innerText = "Livres : " + books.join(", ");
+    }
+
+    function ajouterLivre() {
+      let livre = document.getElementById("bookInput").value;
+      if (livre) books.push(livre);
+      afficherLivres();
+    }
+
+    function ajouterLivreDebut() {
+      let livre = document.getElementById("bookInput").value;
+      if (livre) books.unshift(livre);
+      afficherLivres();
+    }
+
+    function supprimerLivreFin() {
+      books.pop();
+      afficherLivres();
+    }
+
+    function supprimerLivreDebut() {
+      books.shift();
+      afficherLivres();
+    }
+
+    // Set - Catégories
+    let categories = new Set(["Fiction", "Science", "Histoire"]);
+
+    function afficherCategories() {
+      document.getElementById("listeCategories").innerText = "Catégories : " + Array.from(categories).join(", ");
+    }
+
+    function ajouterCategorie() {
+      let cat = document.getElementById("categorieInput").value;
+      categories.add(cat);
+      afficherCategories();
+    }
+
+    function supprimerCategorie() {
+      let cat = document.getElementById("categorieInput").value;
+      categories.delete(cat);
+      afficherCategories();
+    }
+
+    // Map - Emprunts
+    let borrows = new Map();
+
+    function afficherEmprunts() {
+      let output = "Emprunts : ";
+      borrows.forEach((val, key) => {
+        output += `${key} ➜ ${val}, `;
+      });
+      document.getElementById("listeEmprunts").innerText = output;
+    }
+
+    function ajouterEmprunt() {
+      let livre = document.getElementById("livreEmprunt").value;
+      let emprunteur = document.getElementById("emprunteur").value;
+      if (livre && emprunteur) {
+        borrows.set(livre, emprunteur);
+        afficherEmprunts();
+      }
+    }
+
+    function supprimerEmprunt() {
+      let livre = document.getElementById("livreEmprunt").value;
+      borrows.delete(livre);
+      afficherEmprunts();
+    }
+
+    function verifierEmprunt() {
+      let livre = document.getElementById("livreEmprunt").value;
+      alert(borrows.has(livre) ? "Ce livre est emprunté." : "Ce livre n'est pas emprunté.");
+    }
+
+    // Initialisation
+    afficherLivres();
+    afficherCategories();
+    afficherEmprunts();
+  </script>
+
+</body>
+</html>
